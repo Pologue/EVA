@@ -1,7 +1,6 @@
 from openai import OpenAI
 # Configured by environment variables
-VLLM_PORT = 8000
-client = OpenAI(base_url=f"10.1.3.100:{VLLM_PORT}/v1/chat/completions")
+client = OpenAI()
 
 messages = [
     {
