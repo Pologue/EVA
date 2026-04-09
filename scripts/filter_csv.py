@@ -1,21 +1,43 @@
-import pandas as pd
+import csv
+import json
 
 
 INPUT_CSV_FILE = "/opt/data/private/dataset/mask_results/video_max_frames_summary.csv"
+INPUT_JSON_FILE = "/opt/data/private/mask_results/detailed_occlusion_metrics.json"
 OUTPUT_CSV_FILE = "/opt/data/private/dataset/mask_results/video_max_frames_nonzero.csv"
+OUTPUT_JSON_FILE = "/opt/data/private/mask_results/detailed_occlusion_metrics_nonzero.json"
 
-# 1. 读取CSV文件
-df = pd.read_csv(INPUT_CSV_FILE) # 请将 'your_file.csv' 替换为你的文件名
 
-# 2. 筛选第三列不为0的数据
-# 方法一：如果知道第三列的列名（例如 'ColumnC'），这是最推荐的方式
-result = df[df['Max Area'] != 0]
+def main() -> None:
+	with open(INPUT_CSV_FILE, "r", encoding="utf-8", newline="") as f:
+		reader = csv.DictReader(f)
+		rows = list(reader)
 
-# 方法二：如果不知道列名，可以通过位置索引来获取（索引从0开始，所以第三列是2）
-# result = df[df.iloc[:, 2] != 0].iloc[:, 2]
+	filtered_rows = [row for row in rows if float(row["Max Area"]) != 0]
+	filtered_videos = {row["Video Name"] for row in filtered_rows}
 
-# 3. 打印结果
-print(result)
+	with open(INPUT_JSON_FILE, "r", encoding="utf-8") as f:
+		all_results = json.load(f)
 
-result.to_csv(OUTPUT_CSV_FILE, index=False)
-print(f"nonzero summary saved to {OUTPUT_CSV_FILE}")
+	filtered_results = {
+		video_name: video_data
+		for video_name, video_data in all_results.items()
+		if video_name in filtered_videos
+	}
+
+	fieldnames = reader.fieldnames or []
+	with open(OUTPUT_CSV_FILE, "w", encoding="utf-8", newline="") as f:
+		writer = csv.DictWriter(f, fieldnames=fieldnames)
+		writer.writeheader()
+		writer.writerows(filtered_rows)
+
+	with open(OUTPUT_JSON_FILE, "w", encoding="utf-8") as f:
+		json.dump(filtered_results, f, ensure_ascii=False, indent=4)
+
+	print(f"kept {len(filtered_rows)} rows from {len(rows)} total rows")
+	print(f"nonzero summary saved to {OUTPUT_CSV_FILE}")
+	print(f"filtered json saved to {OUTPUT_JSON_FILE}")
+
+
+if __name__ == "__main__":
+	main()
