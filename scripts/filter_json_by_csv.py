@@ -3,8 +3,8 @@ import json
 
 
 INPUT_CSV_FILE = "/opt/data/private/dataset/mask_results/video_max_frames_nonzero.csv"
-INPUT_JSON_FILE = "/opt/data/private/mask_results/detailed_occlusion_metrics.json"
-OUTPUT_JSON_FILE = "/opt/data/private/mask_results/detailed_occlusion_metrics_nonzero.json"
+INPUT_JSON_FILE = "/opt/data/private/dataset/mask_results/detailed_occlusion_metrics.json"
+OUTPUT_JSON_FILE = "/opt/data/private/dataset/mask_results/detailed_occlusion_metrics_nonzero.json"
 
 
 def main() -> None:

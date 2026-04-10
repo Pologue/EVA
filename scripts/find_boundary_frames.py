@@ -3,10 +3,10 @@ import os
 import csv
 
 # 1. 配置文件路径
-INPUT_JSON = "/opt/data/private/mask_results/detailed_occlusion_metrics.json"
-OUTPUT_DIR = "/opt/data/private/mask_results"
-OUTPUT_CSV = os.path.join(OUTPUT_DIR, "occlusion_boundaries.csv")
-OUTPUT_JSON = os.path.join(OUTPUT_DIR, "occlusion_boundaries.json")
+INPUT_JSON = "/opt/data/private/dataset/mask_results/detailed_occlusion_metrics_nonzero.json"
+OUTPUT_DIR = "/opt/data/private/dataset/mask_results"
+OUTPUT_CSV = os.path.join(OUTPUT_DIR, "occlusion_boundaries_nonzero.csv")
+OUTPUT_JSON = os.path.join(OUTPUT_DIR, "occlusion_boundaries_nonzero.json")
 
 # 阈值设定
 THRESHOLD_UNOCCLUDED = 0.6  # 大于此值视为未遮挡
